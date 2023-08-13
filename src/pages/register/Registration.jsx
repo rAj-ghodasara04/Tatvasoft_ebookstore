@@ -20,10 +20,10 @@ const validationSchema = yup.object({
     .required('Confirm Password is required')
     .oneOf([yup.ref('password')], 'Passwords must match'),
 });
-// const roleList = [
-//   { id: 2, name: "buyer" },
-//   { id: 3, name: "seller" },
-// ];
+const roleList = [
+  { id: 3, name: "buyer" },
+  { id: 2, name: "seller" },
+];
 const RegistrationForm = () => {
   const navigate = useNavigate();
 
@@ -35,8 +35,9 @@ const RegistrationForm = () => {
       roleId : values.roleId,
       password : values.password,
     }).then(response => {
+      console.log(values.roleId);
       toast.success("Successfully Register!");
-      navigate("/login");
+      navigate("/Login");
     })
     .catch(error => {
       toast.error("Error! try again");
@@ -99,7 +100,7 @@ const RegistrationForm = () => {
           <FormControl variant="outlined" className='field'>
             <InputLabel htmlFor="roleId">Role</InputLabel>
             <Select
-              id="roleId"
+              id={"roleId"}
               name="roleId"
               label="roleId"
               value={formik.values.roleId}
@@ -107,8 +108,15 @@ const RegistrationForm = () => {
               error={formik.touched.roleId && Boolean(formik.errors.roleId)}
             >
             <MenuItem value="">Select Role</MenuItem>
-              <MenuItem value={2}>Buyer</MenuItem>
-              <MenuItem value={3}>Seller</MenuItem>
+            {roleList.length > 0 &&
+                                roleList.map((role) => (
+                                  <MenuItem
+                                    value={role.id}
+                                    key={"name" + role.id}
+                                  >
+                                    {role.name}
+                                  </MenuItem>
+                                ))}
             </Select>
           </FormControl>
           {formik.touched.roleId && formik.errors.roleId && (

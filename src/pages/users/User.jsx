@@ -106,7 +106,10 @@ function User() {
                       color="success"
                       disableElevation
                       onClick={() => {
-                        navigate(`/edit-user/${row.id}`);
+                        if(row.role === 'admin'){
+                          toast.warning("You cannot edit admin role!")
+                          navigate('/user');
+                        }else navigate(`/edit-user/${row.id}`);
                       }}
                     >
                       Edit

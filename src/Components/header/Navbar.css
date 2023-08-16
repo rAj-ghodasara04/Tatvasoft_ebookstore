@@ -6,7 +6,9 @@
     color: white;
     text-decoration: none;
 }
-
+img{
+    width: 16px;
+}
 .header-search-wrapper{
     background-color: #ededed;
     

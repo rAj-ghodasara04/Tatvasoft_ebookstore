@@ -14,9 +14,15 @@ import './BookListing.css';
 import {defaultFilter} from "../../constant/constant";
 import categoryService from "../../service/category.service";
 import bookService from "../../service/book.service";
+import Shared from '../../utils/Shared';
+import { toast } from "react-toastify";
+import { useAuthContext } from "../../context/auth";
+import { useCartContext } from "../../context/cart";
 import theme from '../../theme';
 
 const BookListing = () => {
+  const authContext = useAuthContext();
+  const cartContext = useCartContext();
   const [bookResponse, setBookResponse] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -83,6 +89,17 @@ const BookListing = () => {
     setBookResponse({ ...bookResponse, items: bookList });
   };
 
+  const addToCart = (book) => {
+    Shared.addToCart(book, authContext.user.id).then((res) => {
+      if (res.error) {
+        toast.error(res.message);
+      } else {
+        toast.success(res.message);
+        cartContext.updateCart();
+      }
+    });
+  };
+
   return (
     <div className='book-listing'>
       <Typography variant='h3' className="title" sx={{mb:'10px'}}>
@@ -138,13 +155,7 @@ const BookListing = () => {
                         MRP &#8377; {book.price}
                       </span>
                     </p>
-                    {/* <button className="MuiButtonBase-root MuiButton-root MuiButton-contained btn pink-btn MuiButton-containedPrimary MuiButton-disableElevation">
-                      <span className="MuiButton-label" onClick={() => {}}>
-                        ADD TO CART
-                      </span>
-                      <span className="MuiTouchRipple-root"></span>
-                    </button> */}
-                    <Button variant="outlined" sx={{color:theme.palette.secondary.main,backgroundColor:theme.palette.primary.main}} className="cart-btn">ADD TO CART</Button>
+                    <Button onClick={()=>addToCart(book)} variant="outlined" sx={{color:theme.palette.secondary.main,backgroundColor:theme.palette.primary.main}} className="cart-btn">ADD TO CART</Button>
                   </div>
                 </div>
               </div>

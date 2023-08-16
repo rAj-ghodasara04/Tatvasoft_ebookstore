@@ -1,25 +1,31 @@
 import React, { useMemo,useState } from 'react';
-import { AppBar, Toolbar, Typography, IconButton, List, ListItem,Button,TextField } from '@mui/material';
+import { AppBar, Toolbar, Typography, List, ListItem,Button,TextField } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { RoutePaths } from '../../utils/enum';
+// import logo from "../../assets/cart.png";
 import Shared from '../../utils/Shared';
 import theme from '../../theme';
 import { Link, NavLink } from 'react-router-dom';
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import './Navbar.css';
 import { useAuthContext } from '../../context/auth';
+import { useCartContext } from "../../context/cart";
 import bookService from "../../service/book.service";
 import SearchIcon from '@mui/icons-material/Search';
 
 const Navbar = () => {
+  const navigate = useNavigate();
   // const open = false;
   const [query, setquery] = useState("");
   const [bookList, setbookList] = useState([]);
   const [openSearchResult, setOpenSearchResult] = useState(false);
   const authContext = useAuthContext();
+  const cartContext = useCartContext();
 
   const logOut = () => {
     authContext.signOut();
-    // cartContext.emptyCart();
+    cartContext.emptyCart();
   };
 
   // const openMenu = () => {
@@ -42,6 +48,22 @@ const Navbar = () => {
     document.body.classList.add("search-results-open");
     searchBook();
     setOpenSearchResult(true);
+  };
+
+  const addToCart = (book) => {
+    if (!authContext.user.id) {
+      navigate(RoutePaths.Login);
+      toast.error("Please login before adding books to cart");
+    } else {
+      Shared.addToCart(book, authContext.user.id).then((res) => {
+        if (res.error) {
+          toast.error(res.error);
+        } else {
+          toast.success("Item added in cart");
+          cartContext.updateCart();
+        }
+      });
+    }
   };
 
   return (
@@ -81,9 +103,19 @@ const Navbar = () => {
             </List>
           )}
         </List>
-        <IconButton color="inherit">
-          <ShoppingCartOutlinedIcon sx={{ color: theme.palette.secondary.main }} />
-        </IconButton>
+        <List className="cart-country-wrap">
+                    <ListItem className="cart-link">
+                      <Link to="/cart" title="Cart">
+                        {/* <img src={logo} alt="cart.png"/>
+                        <span>{cartContext.cartData.length}</span>
+                        Cart */}
+                        <ShoppingCartOutlinedIcon color='secondary'/>
+                      </Link>
+                    </ListItem>
+                    {/* <ListItem className="hamburger" onClick={openMenu}>
+                      <span></span>
+                    </ListItem> */}
+          </List>
       </Toolbar>
     </AppBar>
       <div
@@ -130,7 +162,7 @@ const Navbar = () => {
                                       <span className="price">
                                         {item.price}
                                       </span>
-                                      <Link onClick={() => {}}>
+                                      <Link onClick={() => addToCart(item)}>
                                         Add to cart
                                       </Link>
                                     </div>

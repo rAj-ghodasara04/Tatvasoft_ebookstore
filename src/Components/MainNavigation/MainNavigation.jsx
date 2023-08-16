@@ -9,6 +9,10 @@ import Book from "../../pages/book/Book";
 import EditBook from "../../pages/book/editBook/EditBook";
 import EditUser from "../../pages/users/editUser/EditUser";
 import User from "../../pages/users/User";
+import Category from "../../pages/category/Category";
+import EditCategory from "../../pages/category/editCategory/EditCategory";
+import UpdateProfile from "../../pages/update-profile/UpdateProfile";
+import Cart from "../../pages/cart/Cart";
 
 export const MainNavigation = () => {
   const authContext = useAuthContext();
@@ -46,6 +50,31 @@ export const MainNavigation = () => {
         exact
         path={RoutePaths.EditUser}
         element={authContext.user.id ? <EditUser /> : Redirect}
+      />
+      <Route
+        exact
+        path={RoutePaths.Category}
+        element={authContext.user.id ? <Category /> : Redirect}
+      />
+      <Route
+        exact
+        path={RoutePaths.EditCategory}
+        element={authContext.user.id ? <EditCategory /> : Redirect}
+      />
+      <Route
+        exact
+        path={RoutePaths.AddCategory}
+        element={authContext.user.id ? <EditCategory /> : Redirect}
+      />
+      <Route
+        exact
+        path={RoutePaths.UpdateProfile}
+        element={authContext.user.id ? <UpdateProfile /> : Redirect}
+      />
+      <Route
+        exact
+        path={RoutePaths.Cart}
+        element={authContext.user.id ? <Cart /> : Redirect}
       />
     </Routes>
   );

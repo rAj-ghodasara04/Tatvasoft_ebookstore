@@ -8,6 +8,7 @@ import { MainNavigation } from "./Components/MainNavigation/MainNavigation";
 import { AuthWrapper } from "./context/auth";
 import { ThemeProvider } from "@mui/system";
 import theme from './theme';
+import { CartWrapper } from "./context/cart";
 
 function App() {
   return (
@@ -16,12 +17,14 @@ function App() {
       <ToastContainer/>
       <BrowserRouter>
       <AuthWrapper>
+      <CartWrapper>
       <Navbar/>
       {/* <Search/> */}
       <div className="loader-wrapper">
           <CircularProgress/>
       </div>
       <MainNavigation/>
+      </CartWrapper>
       </AuthWrapper>
       </BrowserRouter>
       </ThemeProvider>

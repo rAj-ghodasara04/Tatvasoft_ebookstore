@@ -3,15 +3,15 @@ export const RoutePaths = {
     Registration: "/Registration",
     User: "/user",
     EditUser: "/edit-user/:id",
-    // Category: "/category",
-    // EditCategory: "/edit-category/:id",
-    // AddCategory: "/add-category",
+    Category: "/category",
+    EditCategory: "/edit-category/:id",
+    AddCategory: "/add-category",
     Book: "/Book",
     EditBook: "/EditBook/:id",
     AddBook: "/add-book",
     BookListing: "/",
-    // Cart: "/Cart",
-    // UpdateProfile: "/update-profile",
+    Cart: "/Cart",
+    UpdateProfile: "/update-profile",
 };
 
 export const Role = {
